@@ -35,10 +35,25 @@ class Menu_model extends CI_Model {
     }
 
     public function get_menu($level = 0, $parent = '') {
+        $auth = new Auth_model();
+        $userdata = $auth->get_userdata();
+
+
         $this->db->where('level', $level);
         if (!empty($parent)) {
             $this->db->where('parent', $parent);
         }
+
+        if ($this->is_jasa > 0) {
+            $this->db->where('is_jasa', intval($this->is_jasa));
+        }
+        if ($this->is_manufaktur > 0) {
+            $this->db->where('is_manufaktur', intval($this->is_manufaktur));
+        }
+        if ($this->is_retail > 0) {
+            $this->db->where('is_retail', ($this->is_retail));
+        }
+
 
         $where_sql = " _menu.id_menu in ( 
             select _menu_jabatan.id_menu from _user
@@ -49,20 +64,14 @@ class Menu_model extends CI_Model {
             _user.`password` like md5(" . $this->db->escape($this->session->userdata('password')) . ") "
                 . " )";
 
-
-        if ($this->is_jasa > 0) {
-            $this->db->where('is_jasa', $this->is_jasa);
+        if ($userdata['is_owner'] < 1) {
+            $this->db->where($where_sql);
         }
-        if ($this->is_manufaktur) {
-            $this->db->where('is_manufaktur', $this->is_manufaktur);
-        }
-        if ($this->is_retail) {
-            $this->db->where('is_retail', $this->is_retail);
-        }
-        $this->db->where($where_sql);
 
         $this->db->order_by('urutan', 'asc');
         $data = $this->db->get('_menu')->result_array();
+//        echo $this->db->last_query();
+//        die();
 
         $this->menu_list = $data;
 

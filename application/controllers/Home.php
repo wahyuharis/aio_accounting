@@ -9,12 +9,6 @@ class Home extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-//        
-//        echo "<pre>";
-//        $this->load->model('_etc/Menu_model');
-//        $menu=new Menu_model();
-//        print_r($menu->get_menu(0));
-//        die();
     }
 
     public function index() {        

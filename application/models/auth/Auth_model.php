@@ -39,11 +39,11 @@ class Auth_model extends CI_Model {
                 . " and status=1";
         $this->db->where($where);
         $db = $this->db->get('_user');
+        
         return $db;
     }
 
     public function get_userdata($key = null) {
-//        $this->userdata = $this->get_db_user()->row_array();
 
         if (!empty($key)) {
             return $this->userdata[$key];
