@@ -71,13 +71,6 @@
 <?php
 $this->load->model('_etc/Menu_model');
 $menu_model = new Menu_model();
-//
-//echo "<pre>";
-//print_r($menu_model->get_menu(0, ''));
-//
-//echo $this->db->last_query();
-//
-//die();
 ?>
 
 
