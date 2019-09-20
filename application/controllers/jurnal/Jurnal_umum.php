@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Jurnal_umum extends CI_Controller {
 
-    private $title = "Supplier";
+    private $title = "Jurnal";
     private $url_controller = "jurnal/Jurnal_umum/";
     private $id_business = "";
 
@@ -14,23 +14,22 @@ class Jurnal_umum extends CI_Controller {
         $this->id_business = $auth->get_userdata('id_business');
     }
 
-    public function index() {
+    private function status_approvement($status_approvement) {
+        $status_arr = array(
+            0 => '<span class="label label-warning">Draft</span>',
+            1 => '<span class="label label-success">Approved</span>',
+            2 => '<span class="label label-danger">Canceled</span>',
+        );
 
+        return $status_arr[intval($status_approvement)];
+    }
+
+    public function index() {
         $this->load->helper('haris_helper');
         $data_contents = array();
         $data_contents['url_controller'] = $this->url_controller;
         $data_contents['panel_title'] = $this->title . " List";
         $data_contents['content'] = '';
-
-        $this->load->library('grocery_filter_ids');
-        $gci_filter = new Grocery_filter_ids();
-        $filter = $gci_filter->get_filter('regencies_id');
-        $gci_filter->set_sql("select tb_regencies.id as kota
-        from tb_regencies
-        left JOIN tb_provinces on tb_provinces.id=tb_regencies.province_id
-        where concat(tb_regencies.name,'-',tb_provinces.name) "
-                . "LIKE '%" . $this->db->escape_str($filter) . "%'");
-
 
         $this->load->library('grocery_CRUD');
         try {
@@ -39,30 +38,53 @@ class Jurnal_umum extends CI_Controller {
             $crud->unset_bootstrap();
             $crud->set_theme('bootstrap');
 
-            $crud->where('m_supplier.status', 1);
-            $crud->where('m_supplier.id_business', $this->id_business);
-            if (!empty($filter)) {
-                $crud->where("regencies_id in (" . $gci_filter->get_ids() . ") ");
-            }
+            $crud->where('journal.status', 1);
+            $crud->where('journal.id_business', $this->id_business);
 
-            $crud->set_table('m_supplier');
+            $crud->set_table('journal');
             $crud->set_subject($this->title);
-            $crud->columns("nama", "email", "phone", "phone_kantor", "alamat", "regencies_id");
+            
+            $columns_list=array('kode','tanggal','status_approvement');
+            
+            $crud->columns($columns_list);
+
             $crud->unset_read();
+            $crud->unset_edit();
+
+            $display_as = array(
+                'journal_status' => 'Status',
+            );
+
+            $crud->display_as($display_as);
+
             $state = $crud->getState();
+            $state_info = $crud->getStateInfo();
             if ($state == 'add') {
                 redirect($this->url_controller . "add");
             }
-            $crud->unset_edit();
+
             $crud->add_action('edit', '', $this->url_controller . 'edit', 'fa-pencil');
 
 
             $crud->callback_delete(array($this, '_callback_delete'));
-            $crud->callback_column('regencies_id', array($this, '_callback_column_kota'));
             if ($this->last_uri() == 'delete_multiple') {
                 $this->_delete_multiple();
             }
-            $crud->display_as('regencies_id', 'Kota');
+
+            $crud->callback_column('debit', function($value, $row) {
+                $value = number_format($value, 2);
+                return $value;
+            });
+
+            $crud->callback_column('kredit', function($value, $row) {
+                $value = number_format($value, 2);
+                return $value;
+            });
+
+
+            $crud->callback_column('status_approvement', function($value, $row) {
+                return $this->status_approvement($value);
+            });
 
             $output = $crud->render();
 
@@ -86,18 +108,19 @@ class Jurnal_umum extends CI_Controller {
         $this->load->view('template', $template);
     }
 
-    function _callback_column_kota($value, $row) {
-        $sql = "select concat(tb_regencies.name,' - ',tb_provinces.name) as kota
-        from tb_regencies
-        left JOIN tb_provinces on tb_provinces.id=tb_regencies.province_id
-        where tb_regencies.id=" . $this->db->escape($value) . " ";
-        $str = $this->db->query($sql)->row_array()['kota'];
-        return $str;
+    public function _callback_delete($primary_key) {
+        $this->db->update('journal', array('status' => '0'), array('id_journal' => $primary_key));
+        return true;
     }
 
-    public function _callback_delete($primary_key) {
-        $this->db->update('m_supplier', array('status' => '0'), array('id_supplier' => $primary_key));
-        return true;
+    function _delete_multiple() {
+        $ids = $this->input->post('ids');
+        if (is_array($ids)) {
+            foreach ($ids as $row) {
+                $this->db->where('id_journal', $row);
+                $this->db->update('journal', array('status' => 0));
+            }
+        }
     }
 
     private function last_uri() {
@@ -106,20 +129,6 @@ class Jurnal_umum extends CI_Controller {
             $last_uri = $row;
         }
         return $last_uri;
-    }
-
-    function _delete_multiple() {
-        $ids = $this->input->post('ids');
-        if (is_array($ids)) {
-            foreach ($ids as $row) {
-                $this->db->where('id_supplier', $row);
-                $this->db->update('m_supplier', array('status' => 0));
-            }
-        }
-    }
-
-    public function add() {
-        $this->edit();
     }
 
     private function css_edit() {
@@ -143,8 +152,11 @@ class Jurnal_umum extends CI_Controller {
         return $js;
     }
 
-    public function edit($id = null) {
+    public function add() {
+        $this->edit();
+    }
 
+    public function edit($id = null) {
         $this->load->helper('haris_helper');
         $data_contents = array();
         $data_contents['url_controller'] = $this->url_controller;
@@ -153,45 +165,8 @@ class Jurnal_umum extends CI_Controller {
             $data_contents['panel_title'] = $this->title . " Edit";
         }
 
-        $data_contents['id_supplier'] = '';
-        $data_contents['id_business'] = $this->id_business;
-        $data_contents['nama'] = '';
-        $data_contents['email'] = '';
-        $data_contents['phone'] = '';
-        $data_contents['phone_kantor'] = '';
-        $data_contents['alamat'] = '';
-        $data_contents['province_id'] = '';
-        $data_contents['regencies_id'] = '';
-        $data_contents['regencies_selected'] = array();
 
-        if (!empty($id)) {
-            $this->db->where('id_supplier', $id);
-            $this->db->where('id_business', $this->id_business);
-            $row = $this->db->get('m_supplier')->row_array();
-
-            $this->db->where('id', $row['regencies_id']);
-            $result = $this->db->get('tb_regencies');
-            $regencies_selected = array();
-
-            if ($result->num_rows() > 0) {
-                $regencies_selected[$result->row_array()['id']] = $result->row_array()['name'];
-            }
-
-            $data_contents['id_supplier'] = $row['id_supplier'];
-            $data_contents['id_business'] = $this->id_business;
-            $data_contents['nama'] = $row['nama'];
-            $data_contents['email'] = $row['email'];
-            $data_contents['phone'] = $row['phone'];
-            $data_contents['phone_kantor'] = $row['phone_kantor'];
-            $data_contents['alamat'] = $row['alamat'];
-            $data_contents['province_id'] = $row['province_id'];
-            $data_contents['regencies_id'] = $row['regencies_id'];
-            $data_contents['regencies_selected'] = $regencies_selected;
-            $data_contents['district_id'] = $row['district_id'];
-        }
-
-
-        $content = $this->load->view('content/supplier/supplier_edit', $data_contents, true);
+        $content = $this->load->view('content/jurnal/jurnal_edit', $data_contents, true);
 
         $css_files = $this->css_edit();
         $js_files = $this->js_edit();
@@ -205,41 +180,6 @@ class Jurnal_umum extends CI_Controller {
             'js_files' => $js_files
         );
         $this->load->view('template', $template);
-    }
-
-    public function kota_ajax() {
-        $filter = $this->input->get('q');
-        $page = intval($this->input->get('page'));
-        $limit = 10;
-        $start = $limit * $page;
-
-
-        $sql = "SELECT 
-        tb_regencies.id,
-        concat(tb_provinces.name,' - ',tb_regencies.name) as `text`
-        from tb_regencies
-        join tb_provinces on tb_provinces.id=tb_regencies.province_id
-
-        where tb_provinces.name like '%" . $this->db->escape_str($filter) . "%'
-        or
-        tb_regencies.name like '%" . $this->db->escape_str($filter) . "%'"
-                . "limit  " . $start . "," . $limit . " ";
-        $data = $this->db->query($sql)->result_array();
-        $results = array();
-        foreach ($data as $row) {
-            $buff = array();
-            $buff['id'] = $row['id'];
-            $buff['text'] = $row['text'];
-            array_push($results, $buff);
-        }
-        $output = array(
-            'results' => $results,
-            'pagination' => array(
-                'more' => true
-            )
-        );
-        header('Content-Type: application/json');
-        echo json_encode($output);
     }
 
     public function delete($id) {
