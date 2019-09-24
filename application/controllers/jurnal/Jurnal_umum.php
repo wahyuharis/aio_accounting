@@ -38,18 +38,20 @@ class Jurnal_umum extends CI_Controller {
             $crud->unset_bootstrap();
             $crud->set_theme('bootstrap');
 
+            $crud->order_by('journal.tanggal', 'desc');
             $crud->where('journal.status', 1);
             $crud->where('journal.id_business', $this->id_business);
 
             $crud->set_table('journal');
             $crud->set_subject($this->title);
-            
-            $columns_list=array('kode','tanggal','status_approvement');
-            
+
+            $columns_list = array('kode', 'tanggal', 'status_approvement');
+
             $crud->columns($columns_list);
 
             $crud->unset_read();
             $crud->unset_edit();
+//            $crud->unset_delete();
 
             $display_as = array(
                 'journal_status' => 'Status',
@@ -144,6 +146,7 @@ class Jurnal_umum extends CI_Controller {
     private function js_edit() {
         $js = array(
             'AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js',
+            'assets/knockout/knockout-3.5.0.js',
         );
 
         $this->load->helper('haris_helper');
