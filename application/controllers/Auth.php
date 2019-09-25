@@ -54,12 +54,12 @@ class Auth extends CI_Controller {
 
         ## { OWNER AUTH###
         $this->db->where($where_str);
-        $exc0 = $this->db->get('_user_owner');
+        $exc0 = $this->db->get('_user_super');
         if ($exc0->num_rows() > 0) {
             $data0 = $exc0->row_array();
             if ($data0['password'] == md5($this->input->post('password'))) {
                 $this->session->set_userdata($sess);
-                redirect('Home_owner');
+                redirect('Home_sa');
             } else {
                 $error .= "Password Salah";
                 $this->session->set_flashdata('login_error', $error);

@@ -82,7 +82,7 @@ class Register extends CI_Controller {
             $data['username'] = $set['username'];
             $data['password'] = md5($set['password']);
 
-            $this->db->insert('_user_owner', $data);
+            $this->db->insert('_user_super', $data);
         }
 
         $output = array(
