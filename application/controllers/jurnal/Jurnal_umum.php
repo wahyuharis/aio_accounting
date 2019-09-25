@@ -51,7 +51,6 @@ class Jurnal_umum extends CI_Controller {
 
             $crud->unset_read();
             $crud->unset_edit();
-//            $crud->unset_delete();
 
             $display_as = array(
                 'journal_status' => 'Status',
@@ -147,11 +146,15 @@ class Jurnal_umum extends CI_Controller {
         $js = array(
             'AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js',
             'assets/knockout/knockout-3.5.0.js',
+            'cleave.js-master/dist/cleave.min.js',
+            
         );
 
         $this->load->helper('haris_helper');
         $js = base_url_from_array($js);
-
+        array_push($js, '//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js');
+        
+        
         return $js;
     }
 
@@ -168,6 +171,16 @@ class Jurnal_umum extends CI_Controller {
             $data_contents['panel_title'] = $this->title . " Edit";
         }
 
+
+        $where_akun = array(
+            'id_business' => $this->id_business,
+            'status' => 1
+        );
+        $select = "id_m_coa as id,";
+        $select .= "concat(kode,' - ',name) as text";
+        $m_coa = $this->db->select($select)->where($where_akun)->get('m_coa')->result_array();
+        
+        $data_contents['m_coa']=$m_coa;
 
         $content = $this->load->view('content/jurnal/jurnal_edit', $data_contents, true);
 

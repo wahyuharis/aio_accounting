@@ -124,7 +124,7 @@ $app = $app_model->get_all_data();
         <div class="register-box">
             <div class="register-logo">
                 <p>Register</p> 
-                <p><a href="<?php echo base_url() ?>auth/register"><b><?= $app['application_name'] ?></b></a></p>
+                <p><a href="<?php echo base_url() ?>register/index"><b><?= $app['application_name'] ?></b></a></p>
             </div>
 
             <div class="register-box-body">
@@ -222,7 +222,7 @@ $app = $app_model->get_all_data();
                     $('#register').prop('disabled', true);
 
                     $.ajax({
-                        url: '<?= base_url() . 'auth/register_submit/' . 'submit' ?>', // Url to which the request is send
+                        url: '<?= base_url() . 'register/register_submit/submit' ?>', // Url to which the request is send
                         type: "POST", // Type of request to be send, called as method
                         data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
                         contentType: false, // The content type used when sending data to the server.
@@ -237,8 +237,7 @@ $app = $app_model->get_all_data();
                                     $('#alert-error').fadeOut('slow');
                                 }, 5000);
                             } else {
-//                                 console.log(data);
-                                window.location = '<?=base_url()?>auth/register_succes?email='+ encodeURI( data.data.email );
+                                window.location = '<?=base_url()?>register/register_succes?email='+ encodeURI( data.data.email );
                             }
                             $('#register').prop('disabled', false);
 
@@ -251,9 +250,6 @@ $app = $app_model->get_all_data();
                     });
 
                 });
-
-
-
             });
 
 

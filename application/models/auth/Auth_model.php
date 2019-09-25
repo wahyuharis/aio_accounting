@@ -11,18 +11,23 @@ class Auth_model extends CI_Model {
         $this->url_controller = rtrim($this->url_controller, "/");
         $this->user_validation();
         $this->userdata = $this->get_db_user()->row_array();
+
+//        echo $this->url_controller;
+//        die();
     }
 
     private function user_validation() {
         $uri_segments = $this->uri->segment_array();
 
-        if (strtolower($this->router->fetch_class()) == 'auth') {
+        if (strtolower($this->url_controller) == 'auth') {
             //pass
-        } elseif (strtolower($uri_segments[1]) == 'home_owner') {
+        } elseif (strtolower($this->url_controller) == 'register') {
             //pass
-        } elseif (strtolower($this->router->fetch_class()) == 'test') {
+        } elseif (strtolower($this->url_controller) == 'home_owner') {
             //pass
-        } elseif (strtolower($this->router->fetch_class()) == 'home') {
+        } elseif (strtolower($this->url_controller) == 'test') {
+            //pass
+        } elseif (strtolower($this->url_controller) == 'home') {
             $this->is_logged_in();
         } else {
             $this->is_logged_in();
@@ -39,7 +44,7 @@ class Auth_model extends CI_Model {
                 . " and status=1";
         $this->db->where($where);
         $db = $this->db->get('_user');
-        
+
         return $db;
     }
 
@@ -51,7 +56,7 @@ class Auth_model extends CI_Model {
             return $this->userdata;
         }
     }
-    
+
     public function get_businessdata() {
         $sql = "SELECT 
         m_business_type.*,
@@ -112,7 +117,5 @@ class Auth_model extends CI_Model {
             die();
         }
     }
-
-    
 
 }
