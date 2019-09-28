@@ -52,8 +52,9 @@
                                     options: $root.m_coa_opt,
                                     optionsText: 'text',
                                     optionsValue: 'id',
-                                    select2: { placeholder: 'Pilih Akun...', allowClear: true }
                                     "  class="form-control ajax-akun" style="width: 100%" >
+                                                                    <!--select2: { placeholder: 'Pilih Akun...', allowClear: true }-->
+
                             </select>
                         </td>
                         <td><input type="text" data-bind="textInput: debit"  class="form-control  cleave-number" /> </td>

@@ -20,7 +20,7 @@
     });
 
 
-    $('#table-jurnal > tbody').bind("DOMSubtreeModified", function () {
+    $('#table-jurnal').bind("DOMSubtreeModified", function () {
         for (let field of $('.cleave-number').toArray()) {
             new Cleave(field, {
                 numeral: true,
@@ -29,29 +29,21 @@
         }
     });
 
-
-
-    ko.bindingHandlers.select2 = {
-        after: ["options", "value"],
-        init: function (el, valueAccessor, allBindingsAccessor, viewModel) {
-            $(el).select2(ko.unwrap(valueAccessor()));
-            ko.utils.domNodeDisposal.addDisposeCallback(el, function () {
-                $(el).select2('destroy');
-            });
-        },
-        update: function (el, valueAccessor, allBindingsAccessor, viewModel) {
-            var allBindings = allBindingsAccessor();
-            var select2 = $(el).data("select2");
-            if ("value" in allBindings) {
-                var newValue = "" + ko.unwrap(allBindings.value);
-                if ((allBindings.select2.multiple || el.multiple) && newValue.constructor !== Array) {
-                    select2.val([newValue.split(",")]);
-                } else {
-                    select2.val([newValue]);
-                }
+    setInterval(function () {
+        $('#table-jurnal > tbody > tr').each(function (index, value) {
+            element = $(this).find('.ajax-akun');
+            if (!element.hasClass("select2-hidden-accessible")) {
+                element.select2({
+                    placeholder: "Pilih Akun",
+                    ajax: {
+                        url: '<?=base_url().$url_controller .'ajax_akun'?>',
+                        dataType: 'json'
+                                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                    }
+                });
             }
-        }
-    };
+        });
+    }, 500);
 
 
     function add_journal_list(m_coa, debit, kredit, keterangan) {
@@ -68,7 +60,7 @@
         var self = this;
         self.journal_list = ko.observableArray([]);
 
-        self.m_coa_opt = ko.observableArray(<?= json_encode($m_coa) ?>);
+        self.m_coa_opt = ko.observableArray([]);
 
         self.debit_total = ko.computed(function () {
             var total = 0;
@@ -117,6 +109,17 @@
         self.remove_journal_list = function (row) {
             self.journal_list.remove(row);
         }
+
+//        $('#table-jurnal > tbody > tr').each(function (index, value) {
+//            element = $(this).find('.ajax-akun');
+//            if (!element.hasClass("select2-hidden-accessible")) {
+//                element.select2({
+//                    allowClear: true,
+//                });
+//            }
+//        });
+
+//        $('.ajax-akun').select2();
 
     }
 

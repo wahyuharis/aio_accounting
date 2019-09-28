@@ -147,14 +147,13 @@ class Jurnal_umum extends CI_Controller {
             'AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js',
             'assets/knockout/knockout-3.5.0.js',
             'cleave.js-master/dist/cleave.min.js',
-            
         );
 
         $this->load->helper('haris_helper');
         $js = base_url_from_array($js);
         array_push($js, '//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js');
-        
-        
+
+
         return $js;
     }
 
@@ -179,8 +178,8 @@ class Jurnal_umum extends CI_Controller {
         $select = "id_m_coa as id,";
         $select .= "concat(kode,' - ',name) as text";
         $m_coa = $this->db->select($select)->where($where_akun)->get('m_coa')->result_array();
-        
-        $data_contents['m_coa']=$m_coa;
+
+        $data_contents['m_coa'] = $m_coa;
 
         $content = $this->load->view('content/jurnal/jurnal_edit', $data_contents, true);
 
@@ -257,6 +256,36 @@ class Jurnal_umum extends CI_Controller {
             'status' => $status,
             'message' => $message,
             'data' => $data,
+        );
+        header('Content-Type: application/json');
+        echo json_encode($output);
+    }
+
+    public function ajax_akun() {
+        $output = array(
+            'results' => array(),
+        );
+
+        $page = intval($this->input->get('page')) - 1;
+        if ($page <= 0) {
+            $page = 0;
+        }
+
+        $this->db->where('status', 1);
+        $this->db->like('name', $this->input->get('q'));
+        $this->db->limit(10, $page);
+        $data = $this->db->get('m_coa')->result_array();
+        $buff = array();
+        foreach ($data as $row) {
+            $buff2 = array(
+                'id' => $row['id_m_coa'],
+                'text' => $row['name']
+            );
+            array_push($buff, $buff2);
+        }
+        $output['results'] = $buff;
+        $output['pagination'] = array(
+            'more' => true
         );
         header('Content-Type: application/json');
         echo json_encode($output);

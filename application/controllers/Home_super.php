@@ -9,10 +9,11 @@ class Home_super extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-//
-//        echo "<pre>";
-//        print_r($_SESSION);
-//        die();
+        $this->load->library('session');
+
+        $this->load->model('auth/Auth_super_user_model');
+        $auth_sa = new Auth_super_user_model();
+        $auth_sa->is_logged_in();
     }
 
     public function index() {
@@ -23,7 +24,16 @@ class Home_super extends CI_Controller {
         $data_contents = array();
         $data_contents['panel_title'] = $this->title . "";
 
-        $content = $this->load->view('home_super/dashboard', $data_contents, true);
+        $user_super = new Auth_super_user_model();
+        $user_data = $user_super->get_userdata();
+
+        $this->db->where('id_owner', $user_data['id_user_owner']);
+        $business_data = $this->db->get('m_business')->result_array();
+
+        $data_contents['business_data'] = $business_data;
+
+
+        $content = $this->load->view('home_super/dashboard_super', $data_contents, true);
 
         $css_files = array();
         $js_files = array();
@@ -33,8 +43,6 @@ class Home_super extends CI_Controller {
             'content' => $content,
             'page_title' => $this->title,
             'content_title' => $this->title,
-            'company_name' => $app['company_name'],
-            'app_name' => $app['application_name'],
             'css_files' => $css_files,
             'js_files' => $js_files
         );

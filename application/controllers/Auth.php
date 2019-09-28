@@ -59,7 +59,7 @@ class Auth extends CI_Controller {
             $data0 = $exc0->row_array();
             if ($data0['password'] == md5($this->input->post('password'))) {
                 $this->session->set_userdata($sess);
-                redirect('Home_sa');
+                redirect('home_super');
             } else {
                 $error .= "Password Salah";
                 $this->session->set_flashdata('login_error', $error);

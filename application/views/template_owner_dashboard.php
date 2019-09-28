@@ -8,7 +8,8 @@ $app=$app_model->get_all_data();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>Super User Dashboard - <?=$app['application_name']?></title>
+        <link rel="icon" href="<?=base_url().'assets/'.$app['favicon'] ?>" type="image/gif" sizes="16x16">
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.7 -->
@@ -68,7 +69,6 @@ $app=$app_model->get_all_data();
                                         <!-- The user image in the menu -->
                                         <li class="user-header">
                                             <img src="<?=base_url()?>AdminLTE-2.4.2/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
                                             <p>
                                                 <?= ucwords($this->session->userdata('username'))?>
                                                 <small>Need to acces Class User_super</small>
@@ -81,7 +81,7 @@ $app=$app_model->get_all_data();
                                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                                             </div>
                                             <div class="pull-right">
-                                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                                <a href="<?= base_url().'auth/logout'?>" class="btn btn-default btn-flat">Sign out</a>
                                             </div>
                                         </li>
                                     </ul>
