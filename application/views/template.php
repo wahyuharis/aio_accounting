@@ -10,7 +10,7 @@ $this->load->library('_etc/Application_model');
 $app = new Application_model();
 
 
-$_SESSION['url_controller']=$url_controller;
+$_SESSION['url_controller'] = $url_controller;
 
 $app_name = $app->get_all_data()['application_name'];
 $company_name = $app->get_all_data()['company_name'];
@@ -350,6 +350,9 @@ $company_name = $app->get_all_data()['company_name'];
         <!-- ./wrapper -->
         <script>
             $(document).ready(function () {
+                $('form').attr('autocomplete', 'off');
+
+
                 $("#side_filter").keyup(function () {
                     var filter = $(this).val(), count = 0;
 
@@ -389,6 +392,8 @@ $company_name = $app->get_all_data()['company_name'];
                     }, 1000);
                 }
             });
+
+
         </script>
     </body>
 </html>

@@ -57,9 +57,9 @@
 
                             </select>
                         </td>
-                        <td><input type="text" data-bind="textInput: debit"  class="form-control  cleave-number" /> </td>
-                        <td><input type="text" data-bind="textInput: kredit" class="form-control  cleave-number" /> </td>
-                        <td><input type="text" data-bind="value: keterangan" class="form-control " /> </td>
+                        <td><input type="text" data-bind="textInput: debit,disable: (kredit)"  class="form-control  cleave-number key-arrow-move text-right" /> </td>
+                        <td><input type="text" data-bind="textInput: kredit,disable: (debit)" class="form-control  cleave-number key-arrow-move text-right" /> </td>
+                        <td><input type="text" data-bind="value: keterangan" class="form-control key-arrow-move" /> </td>
                         <td><a data-bind="click: $root.remove_journal_list" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
                     </tr>
                 </tbody>
@@ -73,21 +73,22 @@
                     </tr>
                     <tr>
                         <th colspan="2" class="text-center" >Total : </th>
-                        <th><span data-bind="text:debit_total"></span></th>
-                        <th><span data-bind="text:kredit_total"></span></th>
+                        <th class="text-right"><span data-bind="text:debit_total"></span></th>
+                        <th  class="text-right" ><span data-bind="text:kredit_total"></span></th>
                         <th></th>
                         <th></th>
                     </tr>
                     <tr>
                         <th colspan="2" class="text-center" >Selisih : </th>
                         <th></th>
-                        <th><span data-bind="text:selisih"></span></th>
+                        <th  class="text-right" ><span data-bind="text:selisih"></span></th>
                         <th></th>
                         <th></th>
                     </tr>
                 </tfoot>
             </table>
             <input type="hidden" name="ko-json" data-bind="value: ko.toJSON($root)">
+            <textarea data-bind="value: ko.toJSON($root)"></textarea>
 
             <!--</div>-->
             <!--<div class="col-md-6"></div>-->

@@ -135,6 +135,8 @@ class Jurnal_umum extends CI_Controller {
     private function css_edit() {
         $css = array(
             'AdminLTE-2.4.2/bower_components/select2/dist/css/select2.min.css',
+            'AdminLTE-2.4.2/bower_components/bootstrap-daterangepicker/daterangepicker.css',
+            'AdminLTE-2.4.2/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
         );
 
         $this->load->helper('haris_helper');
@@ -147,6 +149,11 @@ class Jurnal_umum extends CI_Controller {
             'AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js',
             'assets/knockout/knockout-3.5.0.js',
             'cleave.js-master/dist/cleave.min.js',
+            'assets/jquery.caret.js',
+            'AdminLTE-2.4.2/bower_components/moment/min/moment.min.js',
+            'AdminLTE-2.4.2/bower_components/bootstrap-daterangepicker/daterangepicker.js',
+            'AdminLTE-2.4.2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+            
         );
 
         $this->load->helper('haris_helper');
@@ -271,21 +278,30 @@ class Jurnal_umum extends CI_Controller {
             $page = 0;
         }
 
+
         $this->db->where('status', 1);
-        $this->db->like('name', $this->input->get('q'));
+
+        $where = "name like '%" . $this->db->escape_str($this->input->get('q')) . "%' or ";
+        $where .= "kode like '%" . $this->db->escape_str($this->input->get('q')) . "%' ";
+        $this->db->where($where);
+
         $this->db->limit(10, $page);
         $data = $this->db->get('m_coa')->result_array();
         $buff = array();
         foreach ($data as $row) {
             $buff2 = array(
                 'id' => $row['id_m_coa'],
-                'text' => $row['name']
+                'text' => $row['kode'] . " - " . $row['name']
             );
             array_push($buff, $buff2);
         }
         $output['results'] = $buff;
+        $more=true;
+        if(count($buff)<1){
+            $more=false;
+        }
         $output['pagination'] = array(
-            'more' => true
+            'more' => $more
         );
         header('Content-Type: application/json');
         echo json_encode($output);

@@ -13,10 +13,60 @@
     }
 
 
+
+    function change_row_handle() {
+        var increment = 0;
+        $('.key-arrow-move').keydown(function (e) {
+            var posisi_cursor = parseInt($(this).val().length) - parseInt($(this).caret());
+            if (e.keyCode == 39) {
+                if (posisi_cursor == 0) {
+                    increment++;
+                    if (increment > 2) {
+                        $(this).closest('td').nextAll().find('input').first().focus();
+                        increment = 0;
+                    }
+                }
+            } else if (e.keyCode == 37) {
+                if ($(this).caret() == 0) {
+                    increment++;
+                    if (increment > 2) {
+                        $(this).closest('td').prevAll().find('input').first().focus();
+                        increment = 0;
+                    }
+                }
+            }
+        });
+        $('.key-arrow-move').keyup(function (e) {
+            if (e.keyCode == 40) {
+                $(this).closest('tr').next().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus();
+            } else if (e.keyCode == 38) {
+                $(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus();
+            }
+        });
+    }
+
+
+
     $(document).ready(function () {
         $('#table-jurnal > tbody > tr').on('keyup', function () {
             console.log($(this).html());
         });
+
+
+        $('input[name="tanggal"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+//            minYear: 1901,
+//            maxYear: parseInt(moment().format('YYYY'), 10)
+        }, function (start, end, label) {
+//            var years = moment().diff(start, 'years');
+//            alert("You are " + years + " years old!");
+        });
+
+        change_row_handle();
     });
 
 
@@ -27,6 +77,7 @@
                 numeralThousandsGroupStyle: 'thousand',
             });
         }
+        change_row_handle();
     });
 
     setInterval(function () {
@@ -36,14 +87,13 @@
                 element.select2({
                     placeholder: "Pilih Akun",
                     ajax: {
-                        url: '<?=base_url().$url_controller .'ajax_akun'?>',
+                        url: '<?= base_url() . $url_controller . 'ajax_akun' ?>',
                         dataType: 'json'
-                                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
                     }
                 });
             }
         });
-    }, 500);
+    }, 200);
 
 
     function add_journal_list(m_coa, debit, kredit, keterangan) {
@@ -52,6 +102,7 @@
         self.m_coa = ko.observable(m_coa);
         self.debit = ko.observable(debit);
         self.kredit = ko.observable(kredit);
+
         self.keterangan = ko.observable(keterangan);
     }
 
@@ -124,4 +175,7 @@
     }
 
     ko.applyBindings(new journal_list_model(), document.getElementById('ko-journal'));
+
+
+
 </script>
