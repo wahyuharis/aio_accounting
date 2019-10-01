@@ -11,6 +11,43 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Dumping structure for table aio_accounting.journal
+CREATE TABLE IF NOT EXISTS `journal` (
+  `id_journal` int(11) NOT NULL AUTO_INCREMENT,
+  `id_business` int(11) NOT NULL DEFAULT '0',
+  `kode` varchar(50) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `keterangan` text,
+  `status_approvement` int(11) NOT NULL DEFAULT '1',
+  `created` int(11) NOT NULL,
+  `updated` int(11) NOT NULL,
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_journal`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table aio_accounting.journal: ~2 rows (approximately)
+/*!40000 ALTER TABLE `journal` DISABLE KEYS */;
+INSERT INTO `journal` (`id_journal`, `id_business`, `kode`, `tanggal`, `keterangan`, `status_approvement`, `created`, `updated`, `created_date`, `updated_date`, `status`) VALUES
+	(1, 1, NULL, '2019-09-19', NULL, 1, 1, 1, '2019-09-19 13:26:45', '2019-09-19 14:47:53', 1),
+	(2, 1, NULL, '2019-09-18', NULL, 2, 1, 1, '2019-09-19 13:28:49', '2019-09-28 18:13:27', 0);
+/*!40000 ALTER TABLE `journal` ENABLE KEYS */;
+
+-- Dumping structure for table aio_accounting.journal_list
+CREATE TABLE IF NOT EXISTS `journal_list` (
+  `id_journal_list` int(11) NOT NULL AUTO_INCREMENT,
+  `id_journal` int(11) DEFAULT NULL,
+  `m_coa` int(11) DEFAULT NULL,
+  `debit` int(11) DEFAULT NULL,
+  `kredit` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_journal_list`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table aio_accounting.journal_list: ~0 rows (approximately)
+/*!40000 ALTER TABLE `journal_list` DISABLE KEYS */;
+/*!40000 ALTER TABLE `journal_list` ENABLE KEYS */;
+
 -- Dumping structure for table aio_accounting.m_business
 CREATE TABLE IF NOT EXISTS `m_business` (
   `id_business` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,20 +79,49 @@ CREATE TABLE IF NOT EXISTS `m_business` (
 -- Dumping data for table aio_accounting.m_business: ~1 rows (approximately)
 /*!40000 ALTER TABLE `m_business` DISABLE KEYS */;
 INSERT INTO `m_business` (`id_business`, `id_owner`, `id_business_type`, `nama_business`, `province_id`, `regencies_id`, `district_id`, `alamat_business`, `tlp_business`, `email_business`, `website_business`, `instagram_business`, `twitter_business`, `facebook_business`, `description_business`, `img_business`, `register_business`, `stok`, `status`, `created`, `updated`, `created_by`, `updated_by`) VALUES
-	(1, 1, 1, 'Bisnis test', 1, 1, 1, 'alamat', '123123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2019-08-09 22:50:18', '2019-08-09 22:55:53', 1, 1);
+	(1, 1, 1, 'Bisnis test', 1, 1, 1, 'alamat', '123123', NULL, NULL, NULL, NULL, NULL, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu eros, ornare at auctor et, placerat eu mi. Fusce est velit, sagittis nec sapien ac, accumsan fringilla diam. Nunc blandit leo ut nisi dignissim condimentum. Integer elit eros, tempor in bibendum non, vulputate quis tellus. Phasellus quis elit scelerisque, scelerisque odio et, auctor nisi. Nulla facilisi. Suspendisse quis gravida ligula, sit amet gravida urna. Donec eu congue erat. Integer id lorem ut ligula imperdiet lobortis at eu tellus. Maecenas eros nisl, malesuada eu pharetra quis, fringilla ut nulla. Aenean in placerat metus. In enim lacus, consectetur vitae interdum vel, interdum sed turpis.\r\n\r\nNullam pretium diam vitae dignissim semper. Etiam dapibus tellus ac lobortis consequat. Proin ut sagittis velit, nec cursus dui. Sed sed ligula dapibus nunc consectetur pretium at sit amet risus. Etiam velit massa, eleifend sed pharetra vitae, semper nec magna. Sed vel facilisis ligula, sit amet vestibulum nunc. Vivamus hendrerit semper nisi vitae mollis.', NULL, NULL, 1, 1, '2019-08-09 22:50:18', '2019-09-26 13:03:17', 1, 1);
 /*!40000 ALTER TABLE `m_business` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting.m_business_type
 CREATE TABLE IF NOT EXISTS `m_business_type` (
   `id_business_type` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) NOT NULL,
-  `status` int(1) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `is_jasa` int(1) NOT NULL DEFAULT '1',
+  `is_manufaktur` int(1) NOT NULL DEFAULT '1',
+  `is_retail` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_business_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting.m_business_type: ~0 rows (approximately)
+-- Dumping data for table aio_accounting.m_business_type: ~3 rows (approximately)
 /*!40000 ALTER TABLE `m_business_type` DISABLE KEYS */;
+INSERT INTO `m_business_type` (`id_business_type`, `nama`, `status`, `is_jasa`, `is_manufaktur`, `is_retail`) VALUES
+	(1, 'jasa', 1, 1, 0, 0),
+	(2, 'manufaktur', 1, 0, 1, 0),
+	(3, 'retail', 1, 0, 0, 1);
 /*!40000 ALTER TABLE `m_business_type` ENABLE KEYS */;
+
+-- Dumping structure for table aio_accounting.m_category
+CREATE TABLE IF NOT EXISTS `m_category` (
+  `id_category` int(11) NOT NULL AUTO_INCREMENT,
+  `id_business` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `keterangan` text NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_category`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table aio_accounting.m_category: ~7 rows (approximately)
+/*!40000 ALTER TABLE `m_category` DISABLE KEYS */;
+INSERT INTO `m_category` (`id_category`, `id_business`, `name`, `keterangan`, `status`) VALUES
+	(1, 1, 'Rokok', '<p>\n	Rokok</p>\n', 1),
+	(2, 1, 'coba', 'coba', 0),
+	(3, 1, 'coba2', 'coba2', 0),
+	(6, 1, 'Vapor', '<p>\n	vapor usa</p>\n', 0),
+	(7, 1, 'tgtgtgtg', '<p>\n	tgtgtgtg</p>\n', 0),
+	(8, 1, 'Vapor', '<p>\n	vapor</p>\n', 1),
+	(9, 1, 'coba', '<p>\n	coba</p>\n', 0);
+/*!40000 ALTER TABLE `m_category` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting.m_coa
 CREATE TABLE IF NOT EXISTS `m_coa` (
@@ -66,17 +132,80 @@ CREATE TABLE IF NOT EXISTS `m_coa` (
   `parent` varchar(50) DEFAULT NULL,
   `name` varchar(200) DEFAULT NULL,
   `m_coa_jenis` int(20) NOT NULL DEFAULT '0',
-  `keterangan` text NOT NULL,
+  `keterangan` text,
   `status` int(11) DEFAULT '1',
   PRIMARY KEY (`id_m_coa`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting.m_coa: ~2 rows (approximately)
+-- Dumping data for table aio_accounting.m_coa: ~66 rows (approximately)
 /*!40000 ALTER TABLE `m_coa` DISABLE KEYS */;
 INSERT INTO `m_coa` (`id_m_coa`, `is_cash_bank`, `id_business`, `kode`, `parent`, `name`, `m_coa_jenis`, `keterangan`, `status`) VALUES
-	(1, 1, 1, '000000001', NULL, 'coba', 1, '', 0),
-	(2, 1, 1, '000000002', NULL, 'coba2', 1, '', 0),
-	(3, 1, 1, '000000003', NULL, 'coba', 1, '', 1);
+	(1, 0, 1, '1101-001', NULL, 'Kas IDR', 0, NULL, 1),
+	(2, 0, 1, '1102-001', NULL, 'Mandiri IDR', 0, NULL, 1),
+	(3, 0, 1, '1102-002', NULL, 'BCA IDR', 0, NULL, 1),
+	(4, 0, 1, '1103-001', NULL, 'Piutang Usaha IDR', 0, NULL, 1),
+	(5, 0, 1, '1104-001', NULL, 'Uang Muka Pembelian IDR', 0, NULL, 1),
+	(6, 0, 1, '1105-997', NULL, 'Persediaan Bahan Baku', 0, NULL, 1),
+	(7, 0, 1, '1105-998', NULL, 'Persediaan Dalam Proses', 0, NULL, 1),
+	(8, 0, 1, '1105-999', NULL, 'Barang Jadi', 0, NULL, 1),
+	(9, 0, 1, '1106-001', NULL, 'Sewa dibayar dimuka', 0, NULL, 1),
+	(10, 0, 1, '1106-002', NULL, 'Asuransi dibayar dimuka', 0, NULL, 1),
+	(11, 0, 1, '1107', NULL, 'Piutang Lainnya', 0, NULL, 1),
+	(12, 0, 1, '1108', NULL, 'Piutang Karyawan', 0, NULL, 1),
+	(13, 0, 1, '1109', NULL, 'PPN Masukan', 0, NULL, 1),
+	(14, 0, 1, '1110', NULL, 'PPh 23 Final (Sales Tax)', 0, NULL, 1),
+	(15, 0, 1, '1111', NULL, 'Perlengkapan (Supplies)', 0, NULL, 1),
+	(16, 0, 1, '1112', NULL, 'PPN Lebih Bayar', 0, NULL, 1),
+	(17, 0, 1, '1201-001', NULL, 'Tanah', 0, NULL, 1),
+	(18, 0, 1, '1201-002', NULL, 'Bangunan', 0, NULL, 1),
+	(19, 0, 1, '1201-003', NULL, 'Peralatan Kantor', 0, NULL, 1),
+	(20, 0, 1, '1201-004', NULL, 'Peralatan Toko', 0, NULL, 1),
+	(21, 0, 1, '1201-005', NULL, 'Kendaraan', 0, NULL, 1),
+	(22, 0, 1, '1202-001', NULL, 'Akum. Penys. Bangunan', 0, NULL, 1),
+	(23, 0, 1, '1202-002', NULL, 'Akum. Penys. Peralatan Kantor', 0, NULL, 1),
+	(24, 0, 1, '1202-003', NULL, 'Akum. Penys. Peralatan Toko', 0, NULL, 1),
+	(25, 0, 1, '1202-004', NULL, 'Akum. Penys. Kendaraan', 0, NULL, 1),
+	(26, 0, 1, '2101-001', NULL, 'Hutang Usaha IDR', 0, NULL, 1),
+	(27, 0, 1, '2102-001', NULL, 'Uang Muka Penjualan IDR', 0, NULL, 1),
+	(28, 0, 1, '2103', NULL, 'PPN Keluaran', 0, NULL, 1),
+	(29, 0, 1, '2104', NULL, 'PPh 23 Final (Purchase Tax)', 0, NULL, 1),
+	(30, 0, 1, '2105-001', NULL, 'Hutang Bunga', 0, NULL, 1),
+	(31, 0, 1, '2105-002', NULL, 'Hutang Gaji', 0, NULL, 1),
+	(32, 0, 1, '2105-002', NULL, 'Hutang Dagang', 0, NULL, 1),
+	(33, 0, 1, '2106', NULL, 'PPN Kurang Bayar', 0, NULL, 1),
+	(34, 0, 1, '2201', NULL, 'Hutang Jangka Panjang', 0, NULL, 1),
+	(35, 0, 1, '3000', NULL, 'Modal', 0, NULL, 1),
+	(36, 0, 1, '3100', NULL, 'Laba ditahan', 0, NULL, 1),
+	(37, 0, 1, '4101-001', NULL, 'Penjualan', 0, NULL, 1),
+	(38, 0, 1, '4101-002', NULL, 'Pendapatan Jasa', 0, NULL, 1),
+	(39, 0, 1, '4201', NULL, 'Retur Penjualan', 0, NULL, 1),
+	(40, 0, 1, '4202', NULL, 'Potongan Penjualan', 0, NULL, 1),
+	(41, 0, 1, '5100', NULL, 'Pembelian', 0, NULL, 1),
+	(42, 0, 1, '5200', NULL, 'Harga Pokok Penjualan', 0, NULL, 1),
+	(43, 0, 1, '5300', NULL, 'Biaya Angkut Pembelian', 0, NULL, 1),
+	(44, 0, 1, '5400', NULL, 'Potongan Pembelian', 0, NULL, 1),
+	(45, 0, 1, '6100-001', NULL, 'Beban Penyusutan Bangunan', 0, NULL, 1),
+	(46, 0, 1, '6100-002', NULL, 'Beban Penyusutan Peralatan Kantor', 0, NULL, 1),
+	(47, 0, 1, '6100-003', NULL, 'Beban Penyusutan Peralatan Toko', 0, NULL, 1),
+	(48, 0, 1, '6100-004', NULL, 'Beban Penyusutan Kendaraan', 0, NULL, 1),
+	(49, 0, 1, '6200-001', NULL, 'Biaya Listrik, PAM & Telp', 0, NULL, 1),
+	(50, 0, 1, '6200-002', NULL, 'Biaya Gaji & Upah', 0, NULL, 1),
+	(51, 0, 1, '6200-003', NULL, 'Biaya Pemasaran', 0, NULL, 1),
+	(52, 0, 1, '6200-004', NULL, 'Biaya Umum & Adm Lainnya', 0, NULL, 1),
+	(53, 0, 1, '6200-005', NULL, 'Beban Sewa', 0, NULL, 1),
+	(54, 0, 1, '6200-006', NULL, 'Beban Asuransi', 0, NULL, 1),
+	(55, 0, 1, '6200-007', NULL, 'Beban Perlengkapan', 0, NULL, 1),
+	(56, 0, 1, '7100-001', NULL, 'Pendapatan Bunga Bank', 0, NULL, 1),
+	(57, 0, 1, '7100-002', NULL, 'Penjualan Aktiva Tetap', 0, NULL, 1),
+	(58, 0, 1, '7100-003', NULL, 'Pendapatan Lain-lain', 0, NULL, 1),
+	(59, 0, 1, '7200-001', NULL, 'Biaya Administrasi Bank', 0, NULL, 1),
+	(60, 0, 1, '7200-002', NULL, 'Pajak Bunga Bank', 0, NULL, 1),
+	(61, 0, 1, '7200-003', NULL, 'Biaya Bunga Pinjaman Lainnya', 0, NULL, 1),
+	(62, 0, 1, '7200-004', NULL, 'Biaya Lain-lain', 0, NULL, 1),
+	(63, 0, 1, '7500-001', NULL, 'Beban Pajak Penghasilan', 0, NULL, 1),
+	(64, 0, 1, '7500-002', NULL, 'Beban Pajak', 0, NULL, 1),
+	(65, 0, 1, '8100', NULL, 'Laba/Rugi Penghentian Aktiva Tetap', 0, NULL, 1),
+	(66, 0, 1, '8200', NULL, 'Laba/Rugi Revaluasi Aktiva Tetap', 0, NULL, 1);
 /*!40000 ALTER TABLE `m_coa` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting.m_coa_jenis
@@ -87,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `m_coa_jenis` (
   `keterangan` text,
   `status` int(1) DEFAULT '1',
   PRIMARY KEY (`id_m_coa_jenis`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table aio_accounting.m_coa_jenis: ~15 rows (approximately)
 /*!40000 ALTER TABLE `m_coa_jenis` DISABLE KEYS */;
@@ -106,8 +235,7 @@ INSERT INTO `m_coa_jenis` (`id_m_coa_jenis`, `id_business`, `nama`, `keterangan`
 	(12, '1', 'Harga Pokok Penjualan', NULL, 1),
 	(13, '1', 'Beban', NULL, 1),
 	(14, '1', 'Pendapatan Lain-lain', NULL, 1),
-	(15, '1', 'Beban Lain-lain', NULL, 1),
-	(16, '2', 'Beban Lain-lain2', NULL, 1);
+	(15, '1', 'Beban Lain-lain', NULL, 1);
 /*!40000 ALTER TABLE `m_coa_jenis` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting.m_customer
@@ -8038,14 +8166,16 @@ CREATE TABLE IF NOT EXISTS `_app_values` (
   `variable` varchar(50) DEFAULT NULL,
   `value` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting._app_values: ~2 rows (approximately)
+-- Dumping data for table aio_accounting._app_values: ~5 rows (approximately)
 /*!40000 ALTER TABLE `_app_values` DISABLE KEYS */;
 INSERT INTO `_app_values` (`id`, `variable`, `value`) VALUES
 	(1, 'application_name', 'AIO ACCOUNTING'),
 	(2, 'company_name', 'PT Ultima Rasa Akselerasi'),
-	(4, 'year', '2019');
+	(4, 'year', '2019'),
+	(6, 'favicon', 'favicon.ico'),
+	(7, 'logo', 'logo.png');
 /*!40000 ALTER TABLE `_app_values` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting._ci_sessions
@@ -8058,16 +8188,22 @@ CREATE TABLE IF NOT EXISTS `_ci_sessions` (
   KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table aio_accounting._ci_sessions: ~45 rows (approximately)
+-- Dumping data for table aio_accounting._ci_sessions: ~71 rows (approximately)
 /*!40000 ALTER TABLE `_ci_sessions` DISABLE KEYS */;
 INSERT INTO `_ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
+	('00ua7k7mnrefl646hiseg2es9g5tu27k', '::1', 1568888304, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('0cfv64ai5e9glk7lvlbk1m8d30gcdkmb', '::1', 1567187677, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('0gusv56ss4e1gohkuppvj2ftr9miglrj', '::1', 1568169877, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31373A226D61737465722F636F615F6A656E69732F223B),
 	('0j83om5sp1pkqnshiap54d55p45tevr9', '::1', 1566135144, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('11lk3fsu63s8dtmdbr65lpoc0u12jnif', '::1', 1568189711, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31303A22486F6D655F6F776E6572223B),
 	('12gknigv9fkvhc1e2p9g1p3771ak9vab', '::1', 1566618066, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('14deibusi2npacia696rh8e5b03n8o7b', '10.20.31.238', 1568008817, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31313A226D61737465722F636F612F223B),
 	('2a9blf7mt1ag8ltb3tdm4n9jhhs4uhga', '::1', 1566352344, _binary ''),
 	('3i8kcite6nvf1to5q9eh9fh5aerbovik', '::1', 1567393205, _binary ''),
 	('3q5o2m0b33qspteqn37ifn07slllnqcl', '::1', 1565450227, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('46i1a0vq5436d7akqmk9uqlv6f4urisa', '::1', 1569898250, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('4g4a8c95jjj6aj3b0fkber27ag71hrv6', '::1', 1569337255, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
+	('56n20kp9fd135q8ssj7u0srjei1beu28', '10.20.31.15', 1568104102, _binary ''),
 	('5m0n3nclecgpsjouepq8dqb4r4291o5b', '::1', 1567047653, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('5sohlt2pis9eug3ni55bq52jl85gip8l', '::1', 1566027848, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('5tl28dt9gmb1oei1ap910f63c1g87sdm', '::1', 1567936648, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
@@ -8075,37 +8211,56 @@ INSERT INTO `_ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
 	('6vcukg348oi6rlsicp97n0ejqu591gs1', '::1', 1567608865, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('7ekhg2jpblr9vki8c0vud4jvipqcqs9v', '::1', 1565628648, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('7evq5da0gifmdrlmqun60t37vnlrg1vu', '::1', 1567158382, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('84c2vkhucng6f275v4mu86gg83t7gons', '::1', 1568348450, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A32343A2270656D62656C69616E2F737570706C6965725F6C6973742F223B),
+	('8b60p16nnc350gptrso2uat6hhm6kqdh', '::1', 1569479582, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('8mjts43mafoiesufsb2teh4d47793a5t', '::1', 1569466564, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('8to9i67mtl5b5bmf34r28i64afhdg433', '::1', 1569727610, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('951g7vjlmn09j4kv9jib858a48lm3gvv', '::1', 1567570755, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
-	('9uhabrjdiilen2drc7u130pfvkopjh5h', '::1', 1568020013, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A32343A226D616E6167656D656E745F757365722F6A61626174616E2F223B),
+	('9uhabrjdiilen2drc7u130pfvkopjh5h', '::1', 1568025303, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A32343A226D616E6167656D656E745F757365722F6A61626174616E2F223B),
+	('aeiqk4175ctc7dfpo1ho196loinch2nr', '::1', 1569672789, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('arv7n12uhp5bc840ho0k0qmtdg51nabk', '::1', 1566831875, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('bg2doo37a2pgc9uda49fu0ddrvf0a1mj', '::1', 1568625012, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31373A226D61737465722F636F615F6A656E69732F223B),
+	('bhaf05mdsc7dtdtg6oj42sg2t655ucd2', '::1', 1568367323, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31313A22686F6D652F696E6465782F223B),
+	('btd7jaianjknl9ga9dins42ds9rng1s6', '::1', 1568610352, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A32343A226D616E6167656D656E745F757365722F6A61626174616E2F223B),
 	('c10qh19cfs4eunugvgj3iaoo62csrla3', '::1', 1565617408, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('cmbuja8jecjec9k424ckla8jen3ceeqr', '::1', 1565604639, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('cncdomtnpi4n9c6ifo7k020qmg4iqbee', '::1', 1569298569, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('ct4d5sgthpk50e71p00hr3hd119h98jl', '::1', 1566653539, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('ctqq6u9ifc2ce8bravu34j80f16l8504', '::1', 1567676224, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('d7bj5s6rl587eas0cmm95slv5ek2qoc7', '::1', 1565837489, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('dd3qg0paedkqm906v62ugda4gr6ua286', '::1', 1567505018, _binary 0x757365726E616D657C733A363A2261646D696E32223B70617373776F72647C733A353A2261646D696E223B),
 	('df5qe0i5imh7i1h546so1c2dqa0v4eaj', '::1', 1566072132, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('dra6ht47cp4uvfbr2qa9vesbvmbr3kbs', '::1', 1568970100, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('gfdul6iil3hi0ckr3tgdpmo8dh99ui0q', '::1', 1565949971, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('gmqrumqe6coc1imten7nrdabl3fjan9s', '::1', 1565777540, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('hftuce10q1ugpvtijhbisk87ue2u7cc9', '::1', 1567764449, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('hj9l2e3nvebm53o6ee60335uil2sel1v', '::1', 1565628484, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('homien7tu6jjk4nola75s4f7q1nfkfim', '::1', 1568968008, _binary 0x6C6F67696E5F6572726F727C733A3130313A224D6161662C2053696C616B616E204C6F67696E204C6167692E2053657373696F6E20416E6461204D756E676B696E2054656C616820426572616B686972206174617520416E6461204D656E67616B7365732048616C616D616E2054616E7061204C6F67696E223B5F5F63695F766172737C613A313A7B733A31313A226C6F67696E5F6572726F72223B733A333A226F6C64223B7D),
 	('ic16tajoj1aalifef406p82r607us53o', '::1', 1566033356, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('j4dv8l3bvpi0h62cjepa541pvls36d4p', '::1', 1565857815, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('j945nr2i5bhrgb1a4h8b0op3okt3t4d6', '::1', 1565583652, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('jhl5j2fev6htunkiobt55ko525lg4b9h', '::1', 1565628369, _binary 0x757365726E616D657C733A363A2261646D696E32223B70617373776F72647C733A353A2261646D696E223B),
+	('ji2ktp2kj2a0s3a2u2ul3lk7tj7g94et', '::1', 1568285929, _binary ''),
+	('jlcamq2vg28ihgm0bju573dtql76p0c6', '::1', 1569313348, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('jqeat90ssji9uuihtibk4stvjit52q4v', '::1', 1566138436, _binary ''),
 	('kdr8idcgepgmncf9dci5mnnk9qcq3bv3', '::1', 1565367673, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('ksaam3ls9og6m12fudvjv9b7uaee77nl', '::1', 1569728413, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31373A226D61737465722F636F615F6A656E69732F223B),
 	('l09l4j90m2an5j1044b3stta8bbep7ga', '::1', 1566996038, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('l85hcot6p4g7gup9qnm9f0d3u1qo0bqt', '::1', 1567951586, _binary ''),
 	('ntc94iggml40ven1nfqgcg1b2jqkctfg', '::1', 1565691559, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('o42n08mdjjljusmes7a0u2d5sfckakov', '::1', 1568960606, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31393A226A75726E616C2F4A75726E616C5F756D756D2F223B),
 	('ob8koj3hhpjmh49jfts6csgighc6i6mg', '::1', 1567074262, _binary ''),
 	('ooh9mlvei131vg8kmn55ehda3p85grbp', '::1', 1566196775, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('q63dn8irkv7vfha43nld49lkv8d502s3', '::1', 1568109796, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A31313A226D61737465722F636F612F223B),
 	('q9one9o0p8pg8jebelihm47c19sif0da', '::1', 1567834200, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('qo73rmovu33amchlqrgtsgjjdga1783l', '::1', 1565371223, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('rd7gh7ipraf7l7607f8g2jq89s9akgen', '127.0.0.1', 1569728289, _binary 0x6C6F67696E5F6572726F727C733A3130313A224D6161662C2053696C616B616E204C6F67696E204C6167692E2053657373696F6E20416E6461204D756E676B696E2054656C616820426572616B686972206174617520416E6461204D656E67616B7365732048616C616D616E2054616E7061204C6F67696E223B5F5F63695F766172737C613A313A7B733A31313A226C6F67696E5F6572726F72223B733A333A226F6C64223B7D),
 	('ro8elt60qg0i4hpq20ui1rdr5std7ns0', '::1', 1566032334, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('s0pij370cj10qgr1u26inbkd7nv71crk', '::1', 1567586995, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('s66m3pn27r24pvt24q7q2ntd4krchfb7', '::1', 1565630889, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
 	('sbd52nrt4dg2sska9ar1gl26gau1ks75', '::1', 1565628550, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B),
+	('tq8nfm9irsck3471okf87o6rhsgcp0ht', '::1', 1569385904, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B75726C5F636F6E74726F6C6C65727C733A32343A226D616E6167656D656E745F757365722F6A61626174616E2F223B),
+	('u34scilhmovnvfr4gf1vh6sk9fios3u6', '::1', 1569406048, _binary 0x757365726E616D657C733A363A22686172697333223B70617373776F72647C733A363A22686172697333223B),
 	('vvhn9ofa08du5p12c7nmhmea9lu1jhlg', '::1', 1565802519, _binary 0x757365726E616D657C733A353A2261646D696E223B70617373776F72647C733A353A2261646D696E223B);
 /*!40000 ALTER TABLE `_ci_sessions` ENABLE KEYS */;
 
@@ -8116,14 +8271,13 @@ CREATE TABLE IF NOT EXISTS `_jabatan` (
   `nama` varchar(50) DEFAULT NULL,
   `status` int(11) DEFAULT '1',
   PRIMARY KEY (`id_jabatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting._jabatan: ~2 rows (approximately)
+-- Dumping data for table aio_accounting._jabatan: ~1 rows (approximately)
 /*!40000 ALTER TABLE `_jabatan` DISABLE KEYS */;
 INSERT INTO `_jabatan` (`id_jabatan`, `id_business`, `nama`, `status`) VALUES
 	(1, 1, 'Superadmin', 1),
-	(4, 1, 'penjualan', 1),
-	(5, 2, NULL, 1);
+	(9, 1, 'admin2', 1);
 /*!40000 ALTER TABLE `_jabatan` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting._menu
@@ -8135,33 +8289,38 @@ CREATE TABLE IF NOT EXISTS `_menu` (
   `nama` varchar(50) DEFAULT NULL,
   `url_controller` varchar(100) DEFAULT NULL,
   `urutan` int(11) DEFAULT '99',
+  `is_jasa` int(1) DEFAULT '1',
+  `is_manufaktur` int(1) DEFAULT '1',
+  `is_retail` int(1) DEFAULT '1',
   PRIMARY KEY (`id_menu`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting._menu: ~24 rows (approximately)
+-- Dumping data for table aio_accounting._menu: ~21 rows (approximately)
 /*!40000 ALTER TABLE `_menu` DISABLE KEYS */;
-INSERT INTO `_menu` (`id_menu`, `parent`, `level`, `logo`, `nama`, `url_controller`, `urutan`) VALUES
-	(1, NULL, 0, 'fa fa-money', 'Penjualan', '', 3),
-	(2, NULL, 0, 'fa fa-shopping-cart', 'Pembelian', '', 2),
-	(5, NULL, 0, 'fa fa-archive', 'Jurnal', '', 5),
-	(11, NULL, 0, 'fa fa-folder', 'Master', NULL, 1),
-	(13, NULL, 0, 'fa fa-puzzle-piece', 'Produksi', NULL, 4),
-	(14, 13, 1, 'fa fa-circle-o', 'Resep', NULL, 1),
-	(15, 13, 1, 'fa fa-circle-o', 'Perintah Kerja', NULL, 0),
-	(16, 13, 1, 'fa fa-circle-o', 'Capaian Kerja', NULL, 0),
-	(17, 13, 1, 'fa fa-circle-o', 'Biaya Tambahan', NULL, 0),
-	(19, NULL, 0, 'fa fa-user', 'Management User', '', 99),
-	(20, 19, 1, 'fa fa-circle-o', 'User', 'management_user/user/', 1),
-	(26, 11, 1, 'fa fa-circle-o', 'Item', NULL, 99),
-	(27, 26, 2, 'fa fa-circle-o', 'Item List', 'master/item/', 99),
-	(28, 26, 2, 'fa fa-circle-o', 'Satuan Item', 'master/item_satuan/', 1),
-	(29, 11, 1, 'fa fa-circle-o', 'Akun', NULL, 50),
-	(30, 29, 2, 'fa fa-circle-o', 'Jenis Akun List', 'master/coa_jenis/', 96),
-	(31, 29, 2, 'fa fa-circle-o', 'Akun List', 'master/coa/', 97),
-	(32, 11, 1, 'fa fa-circle-o', 'Kontak', NULL, 99),
-	(33, 32, 2, 'fa fa-circle-o', 'Supplier', 'pembelian/supplier_list/', 98),
-	(34, 32, 2, 'fa fa-circle-o', 'Customer', 'penjualan/customer_list/', 99),
-	(35, 19, 1, 'fa fa-circle-o', 'Jabatan', 'management_user/jabatan/', 12);
+INSERT INTO `_menu` (`id_menu`, `parent`, `level`, `logo`, `nama`, `url_controller`, `urutan`, `is_jasa`, `is_manufaktur`, `is_retail`) VALUES
+	(1, NULL, 0, 'fa fa-money', 'Penjualan', '', 3, 1, NULL, NULL),
+	(2, NULL, 0, 'fa fa-shopping-cart', 'Pembelian', '', 2, 0, NULL, NULL),
+	(11, NULL, 0, 'fa fa-folder', 'Master', NULL, 1, 1, NULL, NULL),
+	(13, NULL, 0, 'fa fa-puzzle-piece', 'Produksi', NULL, 4, 0, NULL, NULL),
+	(14, 13, 1, 'fa fa-circle-o', 'Resep', NULL, 1, 0, NULL, NULL),
+	(15, 13, 1, 'fa fa-circle-o', 'Perintah Kerja', NULL, 0, 0, NULL, NULL),
+	(16, 13, 1, 'fa fa-circle-o', 'Capaian Kerja', NULL, 0, 0, NULL, NULL),
+	(17, 13, 1, 'fa fa-circle-o', 'Biaya Tambahan', NULL, 0, 0, NULL, NULL),
+	(19, NULL, 0, 'fa fa-user', 'Management User', '', 99, 1, NULL, NULL),
+	(20, 19, 1, 'fa fa-circle-o', 'User', 'management_user/user/', 1, 1, NULL, NULL),
+	(26, 11, 1, 'fa fa-circle-o', 'Item', NULL, 99, 1, NULL, NULL),
+	(27, 26, 2, 'fa fa-circle-o', 'Item List', 'master/item/', 99, 1, NULL, NULL),
+	(28, 26, 2, 'fa fa-circle-o', 'Satuan Item', 'master/item_satuan/', 1, 1, NULL, NULL),
+	(29, 11, 1, 'fa fa-circle-o', 'Akun', NULL, 50, 1, NULL, NULL),
+	(30, 29, 2, 'fa fa-circle-o', 'Jenis Akun List', 'master/coa_jenis/', 96, 1, NULL, NULL),
+	(31, 29, 2, 'fa fa-circle-o', 'Akun List', 'master/coa/', 97, 1, NULL, NULL),
+	(32, 11, 1, 'fa fa-circle-o', 'Kontak', NULL, 99, 1, NULL, NULL),
+	(33, 32, 2, 'fa fa-circle-o', 'Supplier', 'pembelian/supplier_list/', 98, 1, NULL, NULL),
+	(34, 32, 2, 'fa fa-circle-o', 'Customer', 'penjualan/customer_list/', 99, 1, NULL, NULL),
+	(35, 19, 1, 'fa fa-circle-o', 'Jabatan', 'management_user/jabatan/', 12, 1, NULL, NULL),
+	(37, NULL, 0, 'fa fa-folder', 'Jurnal', NULL, 5, 1, 0, 0),
+	(38, 26, 2, 'fa fa-circle-o', 'Category', 'master/category/', 99, 1, NULL, NULL),
+	(39, 37, 1, 'fa fa-circle-o', 'Jurnal Umum', 'jurnal/jurnal_umum/', 99, 1, 0, 0);
 /*!40000 ALTER TABLE `_menu` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting._menu_jabatan
@@ -8172,32 +8331,46 @@ CREATE TABLE IF NOT EXISTS `_menu_jabatan` (
   `id_menu` int(11) NOT NULL,
   `priority` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_menu_jabatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting._menu_jabatan: ~21 rows (approximately)
+-- Dumping data for table aio_accounting._menu_jabatan: ~35 rows (approximately)
 /*!40000 ALTER TABLE `_menu_jabatan` DISABLE KEYS */;
 INSERT INTO `_menu_jabatan` (`id_menu_jabatan`, `id_business`, `id_jabatan`, `id_menu`, `priority`) VALUES
-	(1, NULL, 1, 29, 0),
-	(2, NULL, 1, 31, 1),
-	(3, NULL, 1, 17, 2),
-	(4, NULL, 1, 16, 3),
-	(5, NULL, 1, 34, 4),
-	(6, NULL, 1, 26, 5),
-	(7, NULL, 1, 27, 6),
-	(8, NULL, 1, 35, 7),
-	(9, NULL, 1, 30, 8),
-	(10, NULL, 1, 5, 9),
-	(11, NULL, 1, 32, 10),
-	(12, NULL, 1, 19, 11),
-	(13, NULL, 1, 11, 12),
-	(14, NULL, 1, 2, 13),
-	(15, NULL, 1, 1, 14),
-	(16, NULL, 1, 15, 15),
-	(17, NULL, 1, 13, 16),
-	(18, NULL, 1, 14, 17),
-	(19, NULL, 1, 28, 18),
-	(20, NULL, 1, 33, 19),
-	(21, NULL, 1, 20, 20);
+	(248, 1, 9, 1, NULL),
+	(249, 1, 9, 2, NULL),
+	(250, 1, 9, 5, NULL),
+	(251, 1, 9, 11, NULL),
+	(252, 1, 9, 13, NULL),
+	(253, 1, 9, 14, NULL),
+	(254, 1, 9, 15, NULL),
+	(255, 1, 9, 16, NULL),
+	(256, 1, 9, 17, NULL),
+	(257, 1, 9, 26, NULL),
+	(258, 1, 9, 27, NULL),
+	(259, 1, 9, 28, NULL),
+	(260, 1, 9, 29, NULL),
+	(261, 1, 9, 30, NULL),
+	(262, 1, 9, 31, NULL),
+	(263, 1, 9, 32, NULL),
+	(264, 1, 9, 33, NULL),
+	(265, 1, 9, 34, NULL),
+	(297, 1, 1, 1, NULL),
+	(298, 1, 1, 11, NULL),
+	(299, 1, 1, 19, NULL),
+	(300, 1, 1, 20, NULL),
+	(301, 1, 1, 26, NULL),
+	(302, 1, 1, 27, NULL),
+	(303, 1, 1, 28, NULL),
+	(304, 1, 1, 29, NULL),
+	(305, 1, 1, 30, NULL),
+	(306, 1, 1, 31, NULL),
+	(307, 1, 1, 32, NULL),
+	(308, 1, 1, 33, NULL),
+	(309, 1, 1, 34, NULL),
+	(310, 1, 1, 35, NULL),
+	(311, 1, 1, 37, NULL),
+	(312, 1, 1, 38, NULL),
+	(313, 1, 1, 39, NULL);
 /*!40000 ALTER TABLE `_menu_jabatan` ENABLE KEYS */;
 
 -- Dumping structure for table aio_accounting._user
@@ -8210,21 +8383,40 @@ CREATE TABLE IF NOT EXISTS `_user` (
   `email` varchar(100) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(200) DEFAULT NULL,
+  `fullname` varchar(200) DEFAULT NULL,
   `alamat` text,
   `phone` varchar(50) DEFAULT NULL,
   `status` int(11) DEFAULT '1',
-  PRIMARY KEY (`id_user`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table aio_accounting._user: ~2 rows (approximately)
+-- Dumping data for table aio_accounting._user: ~1 rows (approximately)
 /*!40000 ALTER TABLE `_user` DISABLE KEYS */;
-INSERT INTO `_user` (`id_user`, `id_business`, `id_owner`, `is_owner`, `_jabatan`, `email`, `username`, `password`, `alamat`, `phone`, `status`) VALUES
-	(1, 1, NULL, 1, 1, 'harist.wahyu.hid@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, '085330067932', 1),
-	(5, 2, NULL, 1, 1, 'yusuf@mail.com', 'admin2', 'c84258e9c39059a89ab77d846ddab909', NULL, NULL, 1),
-	(8, 1, NULL, NULL, 1, 'admin11@gmail.com', 'admin11', 'e020590f0e18cd6053d7ae0e0a507609', NULL, '123123123123', 1);
+INSERT INTO `_user` (`id_user`, `id_business`, `id_owner`, `is_owner`, `_jabatan`, `email`, `username`, `password`, `fullname`, `alamat`, `phone`, `status`) VALUES
+	(1, 1, NULL, 1, 1, 'harist.wahyu.hid@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, NULL, '085330067932', 1),
+	(2, 1, NULL, NULL, 9, 'admin2@mail.com', 'admin2', 'c84258e9c39059a89ab77d846ddab909', NULL, NULL, '123123123123', 1);
 /*!40000 ALTER TABLE `_user` ENABLE KEYS */;
+
+-- Dumping structure for table aio_accounting._user_super
+CREATE TABLE IF NOT EXISTS `_user_super` (
+  `id_user_owner` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(200) DEFAULT NULL,
+  `fullname` varchar(100) DEFAULT NULL,
+  `alamat` text,
+  `phone` varchar(50) DEFAULT NULL,
+  `validated` int(1) DEFAULT '0',
+  `status` int(1) DEFAULT '1',
+  PRIMARY KEY (`id_user_owner`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aio_accounting._user_super: ~1 rows (approximately)
+/*!40000 ALTER TABLE `_user_super` DISABLE KEYS */;
+INSERT INTO `_user_super` (`id_user_owner`, `email`, `username`, `password`, `fullname`, `alamat`, `phone`, `validated`, `status`) VALUES
+	(1, 'harits.wahyu.hid@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, NULL, '085330067932', 1, 1),
+	(2, 'haris3@mail.com', 'haris3', '71b8274fe1f9169f0a354be99a6702bc', 'wahyu haris', NULL, NULL, 1, 1);
+/*!40000 ALTER TABLE `_user_super` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
