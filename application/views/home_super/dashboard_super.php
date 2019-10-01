@@ -18,17 +18,15 @@
         </div>
 
         <div class="col-md-12">
-
-
             <div class="row">
                 <?php foreach ($business_data as $row) { ?>
                     <div class="col-md-4">
                         <div class="thumbnail">
                             <a href="#">
                                 <?php
-                                $url_image = "uploads/business/blank-img.jpg";
+                                $url_image = base_url() . "uploads/business/blank-img.jpg";
                                 if (!empty(trim($row['img_business']))) {
-                                    $url_image = "uploads/business/" . $row['img_business'];
+                                    $url_image = base_url() . "uploads/business/" . $row['img_business'];
                                 }
                                 ?>
                                 <img src="<?= $url_image ?>" alt="Lights" style="max-height: 300px;max-width: 300px">

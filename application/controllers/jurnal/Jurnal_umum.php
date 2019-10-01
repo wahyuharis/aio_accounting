@@ -16,9 +16,8 @@ class Jurnal_umum extends CI_Controller {
 
     private function status_approvement($status_approvement) {
         $status_arr = array(
-            0 => '<span class="label label-warning">Draft</span>',
-            1 => '<span class="label label-success">Approved</span>',
-            2 => '<span class="label label-danger">Canceled</span>',
+            0 => '<span class="label label-success">Approved</span>',
+            1 => '<span class="label label-warning">Draft</span>',
         );
 
         return $status_arr[intval($status_approvement)];
@@ -153,7 +152,6 @@ class Jurnal_umum extends CI_Controller {
             'AdminLTE-2.4.2/bower_components/moment/min/moment.min.js',
             'AdminLTE-2.4.2/bower_components/bootstrap-daterangepicker/daterangepicker.js',
             'AdminLTE-2.4.2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-            
         );
 
         $this->load->helper('haris_helper');
@@ -187,6 +185,8 @@ class Jurnal_umum extends CI_Controller {
         $m_coa = $this->db->select($select)->where($where_akun)->get('m_coa')->result_array();
 
         $data_contents['m_coa'] = $m_coa;
+        $data_contents['id_journal'] = $id;
+        
 
         $content = $this->load->view('content/jurnal/jurnal_edit', $data_contents, true);
 
@@ -219,45 +219,47 @@ class Jurnal_umum extends CI_Controller {
         $this->load->library('form_validation');
 
         $submit_data = $this->input->post();
+        
+        print_r($_POST);
 
-        $this->form_validation->set_data($submit_data);
-        $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
-        $this->form_validation->set_rules('email', 'Emai', 'trim|required');
-        $this->form_validation->set_rules('phone', 'Telp', 'trim|required');
-        $this->form_validation->set_rules('regencies_id', 'Kota', 'trim|required');
-        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
-
-        if ($this->form_validation->run() == FALSE) {
-            $status = false;
-            $message .= validation_errors();
-        } else {
-            $status = true;
-            $db_data = array();
-            if (!empty($submit_data['id_supplier'])) {
-                $db_data['nama'] = $submit_data['nama'];
-                $db_data['email'] = $submit_data['email'];
-                $db_data['phone'] = $submit_data['phone'];
-                $db_data['phone_kantor'] = $submit_data['phone_kantor'];
-                $db_data['regencies_id'] = $submit_data['regencies_id'];
-                $db_data['alamat'] = $submit_data['alamat'];
-                $db_data['id_business'] = $this->id_business;
-                $db_data['status'] = 1;
-
-                $this->db->where('id_supplier', $submit_data['id_supplier']);
-                $this->db->update('m_supplier', $db_data);
-            } else {
-                $db_data['nama'] = $submit_data['nama'];
-                $db_data['email'] = $submit_data['email'];
-                $db_data['phone'] = $submit_data['phone'];
-                $db_data['phone_kantor'] = $submit_data['phone_kantor'];
-                $db_data['regencies_id'] = $submit_data['regencies_id'];
-                $db_data['alamat'] = $submit_data['alamat'];
-                $db_data['id_business'] = $this->id_business;
-                $db_data['status'] = 1;
-
-                $this->db->insert('m_supplier', $db_data);
-            }
-        }
+//        $this->form_validation->set_data($submit_data);
+//        $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+//        $this->form_validation->set_rules('email', 'Emai', 'trim|required');
+//        $this->form_validation->set_rules('phone', 'Telp', 'trim|required');
+//        $this->form_validation->set_rules('regencies_id', 'Kota', 'trim|required');
+//        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+//
+//        if ($this->form_validation->run() == FALSE) {
+//            $status = false;
+//            $message .= validation_errors();
+//        } else {
+//            $status = true;
+//            $db_data = array();
+//            if (!empty($submit_data['id_supplier'])) {
+//                $db_data['nama'] = $submit_data['nama'];
+//                $db_data['email'] = $submit_data['email'];
+//                $db_data['phone'] = $submit_data['phone'];
+//                $db_data['phone_kantor'] = $submit_data['phone_kantor'];
+//                $db_data['regencies_id'] = $submit_data['regencies_id'];
+//                $db_data['alamat'] = $submit_data['alamat'];
+//                $db_data['id_business'] = $this->id_business;
+//                $db_data['status'] = 1;
+//
+//                $this->db->where('id_supplier', $submit_data['id_supplier']);
+//                $this->db->update('m_supplier', $db_data);
+//            } else {
+//                $db_data['nama'] = $submit_data['nama'];
+//                $db_data['email'] = $submit_data['email'];
+//                $db_data['phone'] = $submit_data['phone'];
+//                $db_data['phone_kantor'] = $submit_data['phone_kantor'];
+//                $db_data['regencies_id'] = $submit_data['regencies_id'];
+//                $db_data['alamat'] = $submit_data['alamat'];
+//                $db_data['id_business'] = $this->id_business;
+//                $db_data['status'] = 1;
+//
+//                $this->db->insert('m_supplier', $db_data);
+//            }
+//        }
 
         $output = array(
             'status' => $status,
@@ -296,9 +298,9 @@ class Jurnal_umum extends CI_Controller {
             array_push($buff, $buff2);
         }
         $output['results'] = $buff;
-        $more=true;
-        if(count($buff)<1){
-            $more=false;
+        $more = true;
+        if (count($buff) < 1) {
+            $more = false;
         }
         $output['pagination'] = array(
             'more' => $more
