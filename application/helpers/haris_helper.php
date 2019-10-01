@@ -40,3 +40,12 @@ function gen_sku($primary_val, $suffix = "") {
     return $sku;
 }
 
+function mask_uriformat($var) {
+    $output = urlencode(base64_encode($var));
+    return $output;
+}
+
+function unmask_uriformat($var) {
+    $output = base64_decode(urldecode($var));
+    return $output;
+}
