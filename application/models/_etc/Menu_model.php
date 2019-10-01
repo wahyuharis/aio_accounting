@@ -23,7 +23,7 @@ class Menu_model extends CI_Model {
             where m_business.id_business=(
                     select _user.id_business from _user
                     where _user.username=" . $this->db->escape($this->session->userdata('username')) . "
-                    and _user.`password`= md5(" . $this->db->escape($this->session->userdata('password')) . ")
+                    and _user.`password`= (" . $this->db->escape($this->session->userdata('password')) . ")
                     limit 1
             )";
         $exc = $this->db->query($sql);
@@ -61,7 +61,7 @@ class Menu_model extends CI_Model {
             where 
             _user.username like " . $this->db->escape($this->session->userdata('username')) . "
             and
-            _user.`password` like md5(" . $this->db->escape($this->session->userdata('password')) . ") "
+            _user.`password` like (" . $this->db->escape($this->session->userdata('password')) . ") "
                 . " )";
 
         if ($userdata['is_owner'] < 1) {

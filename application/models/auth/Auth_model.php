@@ -11,9 +11,6 @@ class Auth_model extends CI_Model {
         $this->url_controller = rtrim($this->url_controller, "/");
         $this->user_validation();
         $this->userdata = $this->get_db_user()->row_array();
-
-//        echo $this->url_controller;
-//        die();
     }
 
     private function user_validation() {
@@ -40,7 +37,7 @@ class Auth_model extends CI_Model {
                 . " or "
                 . "email like " . $this->db->escape($this->session->userdata('username')) . " )"
                 . " and "
-                . "password like " . $this->db->escape(md5($this->session->userdata('password'))) . ""
+                . "password like " . $this->db->escape($this->session->userdata('password')) . ""
                 . " and status=1";
         $this->db->where($where);
         $db = $this->db->get('_user');
@@ -73,7 +70,6 @@ class Auth_model extends CI_Model {
 
     public function is_logged_in() {
         $result = $this->get_db_user();
-
         if ($result->num_rows() < 1) {
             $this->session->set_flashdata('login_error', "Maaf, Silakan Login Lagi. Session Anda Mungkin Telah Berakhir atau Anda Mengakses Halaman Tanpa Login");
             redirect('auth/login');
@@ -106,7 +102,7 @@ class Auth_model extends CI_Model {
                 where 
                 _user.username like " . $this->db->escape($this->session->userdata('username')) . "
                 and
-                `_user`.`password` like md5(" . $this->db->escape($this->session->userdata('password')) . "))
+                `_user`.`password` like " . $this->db->escape($this->session->userdata('password')) . ")
 
         ORDER BY `urutan` ASC";
 

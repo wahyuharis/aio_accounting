@@ -42,7 +42,7 @@ class Auth extends CI_Controller {
     public function login_submit() {
         $sess = array(
             'username' => $this->input->post('username'),
-            'password' => $this->input->post('password'),
+            'password' => md5($this->input->post('password')),
         );
 
         $error = "Maaf, ";
@@ -51,6 +51,7 @@ class Auth extends CI_Controller {
         $where_str .= " email=" . $this->db->escape($this->input->post('username')) . ") ";
         $where_str .= " and ";
         $where_str .= " status=1 ";
+        
 
         ## { OWNER AUTH###
         $this->db->where($where_str);
@@ -94,8 +95,6 @@ class Auth extends CI_Controller {
         ## } USER AUTH ###
         #
         #
-        
-
         redirect('auth/login');
     }
 

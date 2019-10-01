@@ -14,7 +14,7 @@ class Auth_super_user_model extends CI_Model {
                 . " or "
                 . "email like " . $this->db->escape($this->session->userdata('username')) . " )"
                 . " and "
-                . "password like " . $this->db->escape(md5($this->session->userdata('password'))) . ""
+                . "password like " . $this->db->escape($this->session->userdata('password')) . ""
                 . " and status=1";
         $this->db->where($where);
         $db = $this->db->get('_user_super');
