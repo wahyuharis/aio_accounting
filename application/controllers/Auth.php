@@ -82,6 +82,7 @@ class Auth extends CI_Controller {
         if ($result->num_rows() > 0) {
             $data = $result->row_array();
             if ($data['password'] == md5($this->input->post('password'))) {
+                $sess['id_business']=$data['id_business'];
                 $this->session->set_userdata($sess);
                 redirect('Home');
             } else {

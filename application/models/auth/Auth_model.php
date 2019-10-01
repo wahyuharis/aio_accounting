@@ -70,25 +70,38 @@ class Auth_model extends CI_Model {
 
     public function is_logged_in() {
         $result = $this->get_db_user();
+
+        $result_row = $result->row_array();
+
+        if (empty(trim($this->session->userdata('id_business')))) {
+            $this->session->set_flashdata('general_error', "Maaf, Anda Belum Memilih Database Bisnis Yang ingin Anda Buka");
+            redirect('home_super');
+        }
+
+        if ($result_row['id_business'] != $this->session->userdata('id_business')) {
+            $this->session->set_flashdata('general_error', "Maaf, Anda Mungkin Telah Membuka Halaman Bisnis Lain");
+            redirect('home_super');
+        }
+
         if ($result->num_rows() < 1) {
             $this->session->set_flashdata('login_error', "Maaf, Silakan Login Lagi. Session Anda Mungkin Telah Berakhir atau Anda Mengakses Halaman Tanpa Login");
             redirect('auth/login');
         }
     }
 
-    public function is_owner() {
-        $this->get_userdata();
-
-        if (!is_null($this->userdata['id_owner'])) {
-            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
-            redirect('home');
-        }
-
-        if ($this->userdata['is_owner'] != 1) {
-            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
-            redirect('home');
-        }
-    }
+//    public function is_owner() {
+//        $this->get_userdata();
+//
+//        if (!is_null($this->userdata['id_owner'])) {
+//            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
+//            redirect('home');
+//        }
+//
+//        if ($this->userdata['is_owner'] != 1) {
+//            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
+//            redirect('home');
+//        }
+//    }
 
     public function cek_hak_akses() {
         $sql = "SELECT _menu.url_controller
