@@ -1,13 +1,15 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home_super extends CI_Controller {
+class Home_super extends CI_Controller
+{
 
     private $title = "Dashboard";
     private $url_controller = 'Home_super';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library('session');
 
@@ -15,8 +17,10 @@ class Home_super extends CI_Controller {
         $auth_sa = new Auth_super_user_model();
         $auth_sa->is_logged_in();
     }
+    //test hahahaha
 
-    public function index() {
+    public function index()
+    {
         $app_model = new Application_model();
         $app = $app_model->get_all_data();
 
@@ -48,5 +52,4 @@ class Home_super extends CI_Controller {
         );
         $this->load->view('template_owner_dashboard', $template);
     }
-
 }
