@@ -12,7 +12,7 @@
     <div class="box-body">
 
         <div class="col-md-12">
-            <button class="btn btn-block btn-primary" > <i class="fa fa-plus-circle"></i> Tambah Business</button>
+            <a href="<?=base_url().$url_controller."/tambah_business"?>" class="btn btn-block btn-primary" > <i class="fa fa-plus-circle"></i> Tambah Business</a>
             <br>
             <br>
         </div>
