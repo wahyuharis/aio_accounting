@@ -22,6 +22,8 @@ class Auth_model extends CI_Model {
             //pass
         } elseif (strtolower($this->url_controller) == 'home_super') {
             //pass
+        } elseif (strtolower($this->url_controller) == 'home_super2') {
+            //pass
         } elseif (strtolower($this->url_controller) == 'test') {
             //pass
         } elseif (strtolower($this->url_controller) == 'home') {

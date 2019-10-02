@@ -2,10 +2,10 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home_super extends CI_Controller {
+class Home_super2 extends CI_Controller {
 
     private $title = "Dashboard";
-    private $url_controller = 'Home_super';
+    private $url_controller = 'Home_super2';
 
     public function __construct() {
         parent::__construct();
@@ -33,7 +33,7 @@ class Home_super extends CI_Controller {
         $data_contents['business_data'] = $business_data;
 
 
-        $content = $this->load->view('home_super/dashboard_super', $data_contents, true);
+        $content = $this->load->view('home_super/dashboard_super2', $data_contents, true);
 
         $css_files = array();
         $js_files = array();
