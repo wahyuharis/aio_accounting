@@ -2,11 +2,11 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home_super extends CI_Controller
+class Wizard extends CI_Controller
 {
 
-    private $title = "Dashboard";
-    private $url_controller = 'Home_super';
+    private $title = "Wizard Bisnis";
+    private $url_controller = 'Wizard_bisnis';
 
     public function __construct()
     {
@@ -17,8 +17,6 @@ class Home_super extends CI_Controller
         $auth_sa = new Auth_super_user_model();
         $auth_sa->is_logged_in();
     }
-
-    //coba haris branch_h
 
     public function index()
     {
@@ -37,13 +35,13 @@ class Home_super extends CI_Controller
 
         $data_contents['business_data'] = $business_data;
 
-        $content = $this->load->view('home_super/dashboard_super', $data_contents, true);
+        $content = $this->load->view('wizard/wizard_bisnis', $data_contents, true);
 
         $css_files = array();
         $js_files = array();
 
         $template = array(
-            'url_controller' => $this->url_controller,
+            // 'url_controller' => $this->url_controller,
             'content' => $content,
             'page_title' => $this->title,
             'content_title' => $this->title,

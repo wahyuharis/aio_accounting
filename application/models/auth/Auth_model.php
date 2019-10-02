@@ -1,11 +1,13 @@
 <?php
 
-class Auth_model extends CI_Model {
+class Auth_model extends CI_Model
+{
 
     private $userdata = array();
     private $url_controller = "";
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->url_controller = $this->router->directory . "" . $this->router->class;
         $this->url_controller = rtrim($this->url_controller, "/");
@@ -13,16 +15,17 @@ class Auth_model extends CI_Model {
         $this->userdata = $this->get_db_user()->row_array();
     }
 
-    private function user_validation() {
+    private function user_validation()
+    {
         $uri_segments = $this->uri->segment_array();
 
         if (strtolower($this->url_controller) == 'auth') {
             //pass
         } elseif (strtolower($this->url_controller) == 'register') {
             //pass
-        } elseif (strtolower($this->url_controller) == 'home_super') {
-
-        } elseif (strtolower($this->url_controller) == 'test') {
+        } elseif (strtolower($this->url_controller) == 'home_super') { } elseif (strtolower($this->url_controller) == 'wizard') {
+            //pass
+        } elseif (strtolower($this->url_controller) == 'home_super') { } elseif (strtolower($this->url_controller) == 'test') {
             //pass
         } elseif (strtolower($this->url_controller) == 'home') {
             $this->is_logged_in();
@@ -32,20 +35,22 @@ class Auth_model extends CI_Model {
         }
     }
 
-    private function get_db_user() {
+    private function get_db_user()
+    {
         $where = "(username like " . $this->db->escape($this->session->userdata('username')) . " "
-                . " or "
-                . "email like " . $this->db->escape($this->session->userdata('username')) . " )"
-                . " and "
-                . "password like " . $this->db->escape($this->session->userdata('password')) . ""
-                . " and status=1";
+            . " or "
+            . "email like " . $this->db->escape($this->session->userdata('username')) . " )"
+            . " and "
+            . "password like " . $this->db->escape($this->session->userdata('password')) . ""
+            . " and status=1";
         $this->db->where($where);
         $db = $this->db->get('_user');
 
         return $db;
     }
 
-    public function get_userdata($key = null) {
+    public function get_userdata($key = null)
+    {
 
         if (!empty($key)) {
             return $this->userdata[$key];
@@ -54,7 +59,8 @@ class Auth_model extends CI_Model {
         }
     }
 
-    public function get_businessdata() {
+    public function get_businessdata()
+    {
         $sql = "SELECT 
         m_business_type.*,
         m_business.*
@@ -68,7 +74,8 @@ class Auth_model extends CI_Model {
         return $data;
     }
 
-    public function is_logged_in() {
+    public function is_logged_in()
+    {
         $result = $this->get_db_user();
 
         $result_row = $result->row_array();
@@ -89,21 +96,22 @@ class Auth_model extends CI_Model {
         }
     }
 
-//    public function is_owner() {
-//        $this->get_userdata();
-//
-//        if (!is_null($this->userdata['id_owner'])) {
-//            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
-//            redirect('home');
-//        }
-//
-//        if ($this->userdata['is_owner'] != 1) {
-//            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
-//            redirect('home');
-//        }
-//    }
+    //    public function is_owner() {
+    //        $this->get_userdata();
+    //
+    //        if (!is_null($this->userdata['id_owner'])) {
+    //            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
+    //            redirect('home');
+    //        }
+    //
+    //        if ($this->userdata['is_owner'] != 1) {
+    //            $this->session->set_flashdata('general_error', "Maaf, Halaman tersebut tidak termasuk dalam hak akses anda");
+    //            redirect('home');
+    //        }
+    //    }
 
-    public function cek_hak_akses() {
+    public function cek_hak_akses()
+    {
         $sql = "SELECT _menu.url_controller
         FROM `_menu`
         WHERE 
@@ -126,5 +134,4 @@ class Auth_model extends CI_Model {
             die();
         }
     }
-
 }
