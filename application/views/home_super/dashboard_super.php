@@ -22,7 +22,7 @@
                 <?php foreach ($business_data as $row) { ?>
                     <div class="col-md-4">
                         <div class="thumbnail">
-                            <a href="#">
+                            <a href="<?=base_url()."auth/super_user_redirect?id_business=".mask_uriformat($row['id_business']) ?>">
                                 <?php
                                 $url_image = base_url() . "uploads/business/blank-img.jpg";
                                 if (!empty(trim($row['img_business']))) {
