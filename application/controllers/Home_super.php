@@ -17,7 +17,7 @@ class Home_super extends CI_Controller
         $auth_sa = new Auth_super_user_model();
         $auth_sa->is_logged_in();
     }
-    //test
+    //test hahahaha
 
     public function index()
     {
