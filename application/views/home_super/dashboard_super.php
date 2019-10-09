@@ -12,6 +12,7 @@
     <div class="box-body">
 
         <div class="col-md-12">
+            <a href="<?php echo base_url(); ?>wizard" class="btn btn-block btn-primary"> <i class="fa fa-plus-circle"></i> Tambah Business</a>
             <a href="<?=base_url().$url_controller."/tambah_business"?>" class="btn btn-block btn-primary" > <i class="fa fa-plus-circle"></i> Tambah Business</a>
             <br>
             <br>
@@ -24,11 +25,11 @@
                         <div class="thumbnail">
                             <a target="_blank" href="<?=base_url()."auth/super_user_redirect?id_business=".mask_uriformat($row['id_business']) ?>">
                                 <?php
-                                $url_image = base_url() . "uploads/business/blank-img.jpg";
-                                if (!empty(trim($row['img_business']))) {
-                                    $url_image = base_url() . "uploads/business/" . $row['img_business'];
-                                }
-                                ?>
+                                    $url_image = base_url() . "uploads/business/blank-img.jpg";
+                                    if (!empty(trim($row['img_business']))) {
+                                        $url_image = base_url() . "uploads/business/" . $row['img_business'];
+                                    }
+                                    ?>
                                 <img src="<?= $url_image ?>" alt="Lights" style="max-height: 300px;max-width: 300px">
                                 <div class="caption" style="height: 100px;">
                                     <h4 class="text-center"><?= $row['nama_business'] ?></h4>
@@ -47,7 +48,8 @@
 </div>
 <?php
 
-function limit_text($text, $limit) {
+function limit_text($text, $limit)
+{
     if (str_word_count($text, 0) > $limit) {
         $words = str_word_count($text, 2);
         $pos = array_keys($words);

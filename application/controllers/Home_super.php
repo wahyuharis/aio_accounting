@@ -33,7 +33,6 @@ class Home_super extends CI_Controller {
         $data_contents['business_data'] = $business_data;
         $data_contents['url_controller'] = $this->url_controller;
 
-
         $content = $this->load->view('home_super/dashboard_super', $data_contents, true);
 
         $css_files = array();

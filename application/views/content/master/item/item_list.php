@@ -22,11 +22,11 @@
 
         <div class="text-right">
             <a href="#" class="btn btn-success">Export</a>
-            <a href="<?=base_url().$url_controller?>add" class="btn btn-primary">Tambah</a>
+            <a href="<?= base_url() . $url_controller ?>wizard" class="btn btn-primary">Tambah</a>
         </div>
-        
+
         <div style="height: 20px"></div>
-        
+
         <table id="table-list" class="table table-bordered table-condensed table-strip">
             <thead class="bg">
                 <tr>
@@ -41,16 +41,18 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var table = $('#table-list').DataTable({
             'ajax': {
                 'url': '<?= base_url() . $url_controller ?>datatables',
-                "complete": function (data, type) {
+                "complete": function(data, type) {
                     json = data.responseJSON;
                     console.log(json);
-//                    $('#total_row').html(json.data.length);
+                    //                    $('#total_row').html(json.data.length);
                 },
-                "order": [[1, "desc"]],
+                "order": [
+                    [1, "desc"]
+                ],
                 "processing": true,
 
             },
@@ -66,4 +68,3 @@
         }
     }
 </script>
-
