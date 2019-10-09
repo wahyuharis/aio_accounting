@@ -34,7 +34,7 @@ class Wizard extends CI_Controller
         $business_data = $this->db->get('m_business')->result_array();
 
         $data_contents['business_data'] = $business_data;
-
+        // $data_contents['bs_type'] = $this->data_model->get_all('m_business_type');
         $content = $this->load->view('wizard/wizard_bisnis', $data_contents, true);
 
         $css_files = array();
@@ -50,4 +50,16 @@ class Wizard extends CI_Controller
         );
         $this->load->view('template_owner_dashboard', $template);
     }
+
+    function ambil_data()
+    {
+        $modul = $this->input->post('modul');
+        $id_jenis_usaha = $this->input->post('id_jenis_usaha');
+        if ($modul == "jenis_usaha") {
+            echo $this->data_model->jenis_usaha($id_jenis_usaha);
+        }
+    }
+
+    function tambah_bisnis()
+    { }
 }
