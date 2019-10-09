@@ -13,7 +13,6 @@
 
         <div class="col-md-12">
             <a href="<?php echo base_url(); ?>wizard" class="btn btn-block btn-primary"> <i class="fa fa-plus-circle"></i> Tambah Business</a>
-            <a href="<?=base_url().$url_controller."/tambah_business"?>" class="btn btn-block btn-primary" > <i class="fa fa-plus-circle"></i> Tambah Business</a>
             <br>
             <br>
         </div>
@@ -23,7 +22,7 @@
                 <?php foreach ($business_data as $row) { ?>
                     <div class="col-md-4">
                         <div class="thumbnail">
-                            <a target="_blank" href="<?=base_url()."auth/super_user_redirect?id_business=".mask_uriformat($row['id_business']) ?>">
+                            <a target="_blank" href="<?= base_url() . "auth/super_user_redirect?id_business=" . mask_uriformat($row['id_business']) ?>">
                                 <?php
                                     $url_image = base_url() . "uploads/business/blank-img.jpg";
                                     if (!empty(trim($row['img_business']))) {
