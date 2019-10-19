@@ -3,7 +3,6 @@
         if (target.length < 1) {
             target = "0";
         }
-
         var str = target.replace(new RegExp(',', 'g'), '');
         return parseFloat(str);
     }
