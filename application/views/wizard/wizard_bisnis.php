@@ -3,6 +3,11 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
+<div class="">
+
+</div>
+
+
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title"><?= $panel_title ?></h3>
