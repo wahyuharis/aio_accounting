@@ -113,6 +113,10 @@ class Auth extends CI_Controller {
     public function super_user_redirect() {
         //?id_business=MQ%3D%3D
         $id_business = base64_decode(urldecode($this->input->get('id_business')));
+        
+        if(empty(trim($this->session->userdata('username')))){
+            redirect('Home_super');
+        }
 
         if (empty(trim($id_business))) {
             $this->session->set_flashdata('general_error', "Silakan Pilih Database Business Dulu");
